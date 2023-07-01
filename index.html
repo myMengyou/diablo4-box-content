@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗黑破坏神4箱子内容统计</title>
+    <link rel="stylesheet" href="./libs/element-plus@2.3.7/element-plus@2.3.7.css">
+    <!-- <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css" /> -->
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .flex-box {
+            display: flex;  
+        }
+        .order-num {
+            flex-shrink: 0;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <h1>箱子威能统计</h1>
+        <el-form inline :model="searchForm" class="search-form" ref="formRef">
+            <el-form-item label="威能名">
+                <!-- <el-select-v2 v-model="searchForm.name" :options="nameList" filterable clearable placeholder="选择威能">
+                </el-select-v2> -->
+                <el-autocomplete v-model="searchForm.name" :fetch-suggestions="suggestions" clearable />
+            </el-form-item>
+            <el-form-item label="威能类型">
+                <el-select-v2 v-model="searchForm.powerType" :options="powerTypeList" clearable placeholder="选择威能类型">
+                </el-select-v2>
+            </el-form-item>
+            <el-form-item label="装备名">
+                <el-input v-model="searchForm.equipmentName" clearable></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="doReset">重置</el-button>
+                <el-button type="warning" @click="clickCheckPower">查看威能表</el-button>
+                <el-button type="primary" @click="clickAdd">新增</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table :data="originData" stripe border :header-cell-style="{background: '#f6f6f6', color: '#333'}">
+            <el-table-column align="center" type="index" label="序号" width="80px"></el-table-column>
+            <el-table-column align="center" prop="name" label="威能名" min-width="100px"></el-table-column>
+            <el-table-column align="center" label="威能类型" min-width="100px">
+                <template #default="scope">
+                    <div>{{powerTypeObj[scope.row.powerType]}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" v-for="index in [1,2,3]" :key="index" :label="'威能' + index"
+                min-width="100px">
+                <template #default="scope">
+                    <template v-if="scope.row.itemList[index-1]">
+                        <div>
+                            <span>{{scope.row.itemList[index-1].valueOne}}</span>
+                            <span v-if="scope.row.itemList[index-1].valueTwo">,
+                                {{scope.row.itemList[index-1].valueTwo}}</span>
+                            <span v-if="scope.row.itemList[index-1].valueThree">,
+                                {{scope.row.itemList[index-1].valueThree}}</span>
+                        </div>
+                        <div v-if="scope.row.itemList[index-1].equipment">{{scope.row.itemList[index-1].equipment}}
+                        </div>
+                    </template>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" prop="equipmentName" label="装备名" min-width="120px"></el-table-column>
+            <el-table-column align="center" prop="description" label="威能描述" min-width="140px"></el-table-column>
+            <el-table-column align="center" prop="remark" label="备注" min-width="120px"></el-table-column>
+            <!-- <el-table-column align="center" label="截图" min-width="140px">
+                <template #default="scope">
+                    <el-image v-for="(item, index) in scope.row.screenshots" :key="index" :src="item" fit="contain" />
+                </template>
+            </el-table-column> -->
+            <el-table-column align="center" label="操作" min-width="100px">
+                <template #default="scope">
+                    <el-button type="text" @click="clickChange(scope.$index)">修改</el-button>
+                    <el-button type="text" @click="clickRemove">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-dialog v-model="isShowDialog" :title="isAdd? '新增威能' : '修改威能'" width="700px">
+            <el-form :model="itemForm" label-width="120px">
+                <el-form-item label="选择威能模板">
+                    <el-select-v2 v-model="itemForm.templateName" :options="powerNameList" filterable clearable
+                        placeholder="选择威能" @change="selectPowerTemplate">
+                    </el-select-v2>
+                </el-form-item>
+                <el-form-item label="威能名" prop="name" required>
+                    <el-input v-model="itemForm.name" clearable></el-input>
+                </el-form-item>
+                <el-form-item prop="powerType">
+                    <template #label>
+                        <div style="display: flex; align-items: center;">
+                            <span>威能类型</span>
+                            <el-popover placement="bottom-start" title="威能类型说明" :width="400" trigger="hover">
+                                <template #reference>
+                                    <el-icon size="16" style="margin-left: 4px;">
+                                        <Warning />
+                                    </el-icon>
+                                </template>
+                                <template #default>
+                                    <div style="line-height: 20px;">
+                                        <div class="flex-box"><span
+                                                class="order-num">1.</span>无差别类型：同种威能的各个威能个体的效果一致，不存在个体差距，没有浮动数值范围。
+                                        </div>
+                                        <div class="flex-box"><span
+                                                class="order-num">2.</span>范围差别类型：同种威能的各个威能个体数值在一个区间内存在差距，有浮动数值范围。</div>
+                                        <div class="flex-box"><span
+                                                class="order-num">3.</span>强度数值差别类型：同种威能的各个威能个体的数值跟装备的物品强度有关，物品强度越高，威能数值越高。（包含部分有浮动范围的）
+                                        </div>
+                                    </div>
+                                </template>
+                            </el-popover>
+                        </div>
+                    </template>
+                    <el-radio-group v-model="itemForm.powerType">
+                        <el-radio v-for="(item, index) in powerTypeList" :key="index"
+                            :label="item.value">{{item.label}}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="威能描述">
+                    <el-input type="textarea" v-model="itemForm.description"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="itemForm.remark"></el-input>
+                </el-form-item>
+                <el-table :data="itemForm.itemList" style="width: 100%;" border>
+                    <el-table-column align="center" type="index" label="威能序号" width="90px"></el-table-column>
+                    <el-table-column align="center" label="数值1" prop="valueOne" min-width="100px">
+                        <template #default="scope">
+                            <el-input v-model="scope.row.valueOne" clearable></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="数值2" prop="valueTwo" min-width="100px">
+                        <template #default="scope">
+                            <el-input v-model="scope.row.valueTwo" clearable></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="数值3" prop="valueThree" min-width="100px">
+                        <template #default="scope">
+                            <el-input v-model="scope.row.valueThree" clearable></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="装备名" prop="equipment" min-width="160px">
+                        <template #default="scope">
+                            <el-input v-model="scope.row.equipment" clearable></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="isShowDialog = false">取消</el-button>
+                    <el-button type="primary" @click="confirmAdd">确定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+
+    <script src="./libs/vue.global.js"></script>
+    <script src="./libs/element-plus@2.3.7/element-plus@2.3.7.js"></script>
+    <script src="./libs/element-plus@2.3.7/icons-vue@2.1.0/index.iife.min.js"></script>
+    <script src="./libs/element-plus@2.3.7/zh-cn.mjs"></script>
+    <script src="./libs/lodash@4.17.21/lodash.min.js"></script>
+    <script src="./constants.js"></script>
+    <!-- <script src="//unpkg.com/element-plus"></script> -->
+    <script>
+        const { createApp, ref } = Vue;
+
+        const app = createApp({
+            components: {
+                Warning: ElementPlusIconsVue.Warning,
+            },
+            setup() {
+                const originData = ref([]);
+                // const tableData = ref([]);
+                const maxQty = 3; // 记录相同物品数量最大值，最多只记录3个相同的物品的数据，再多也没意义，箱子就那么小= 。=
+                const searchForm = ref({});
+                const powerList = ref([]);
+                const powerTypeList = ref([]);
+                const powerTypeObj = ref({});
+                const powerData = ref([]);
+
+                const defaultItem = {
+                    templateName: "",
+                    name: "",
+                    powerType: 1,
+                    itemList: [{}, {}, {}],
+                    remark: "",
+                };
+                const isShowDialog = ref(false);
+                const itemForm = ref({});
+                const isAdd = ref(false);
+                const currentIndex = ref(0);
+
+                // tableData.value = [
+                //     {
+                //         name: "威能名",
+                //         itemList: [
+                //             {
+                //                 valueOne: "数值1",
+                //                 valueTwo: "数值2",
+                //                 valueThree: "数值3",
+                //                 equipment: "武器名1",
+                //             },
+                //             {
+                //                 valueOne: "数值1",
+                //                 valueTwo: "数值2",
+                //                 valueThree: "数值3",
+                //                 equipment: "武器名2",
+                //             },
+                //             {
+                //                 valueOne: "数值1",
+                //                 valueTwo: "数值2",
+                //                 valueThree: "数值3",
+                //                 equipment: "武器名3",
+                //             },
+                //         ],
+                //         remark: "备注",
+                //         screenshots: [],
+                //     },
+                // ];
+                searchForm.value = {
+                    name: "",
+                    equipmentName: "",
+                    powerType: "",
+                };
+                powerTypeList.value = POWER_TYPE_LIST;
+                const obj = {};
+                for (let i in powerTypeList.value) {
+                    obj[powerTypeList.value[i].value] = powerTypeList.value[i].label;
+                }
+                powerTypeObj.value = obj;
+                return {
+                    originData,
+                    // tableData,
+                    maxQty,
+                    searchForm,
+                    powerList,
+                    defaultItem,
+                    isShowDialog,
+                    itemForm,
+                    powerTypeList,
+                    powerTypeObj,
+                    powerData,
+                    isAdd,
+                    currentIndex,
+                }
+            },
+            computed: {
+                filterTableData({ originData, searchForm }) {
+                    return originData.filter(item => item.name.includes(searchForm.name) &&
+                        (!searchForm.powerType || item.powerType === searchForm.powerType) &&
+                        item.equipmentName.includes(searchForm.equipmentName));
+                },
+                nameList({ originData }) {
+                    return originData.map(item => {
+                        return {
+                            label: item.name,
+                            value: item.name,
+                        }
+                    })
+                },
+                powerNameList({ powerData }) {
+                    return powerData.map(item => {
+                        return {
+                            label: item.name,
+                            value: item.name,
+                        }
+                    })
+                },
+                hasSameName({ originData, itemForm }) {
+                    const item = originData.find(item => item.name === itemForm.name);
+                    return !!item;
+                },
+            },
+            created() {
+                const dataStr = localStorage.getItem(STORAGE_KEY.itemData) || "[]";
+                const data = JSON.parse(dataStr);
+                this.originData = data;
+                const powerDataStr = localStorage.getItem(STORAGE_KEY.powerData) || "[]";
+                const powerData = JSON.parse(powerDataStr);
+                this.powerData = powerData;
+            },
+            methods: {
+                updateStorageData() {
+                    localStorage.setItem(STORAGE_KEY.itemData, JSON.stringify(this.originData));
+                },
+                suggestions(val) {
+                    return val ? this.nameList.filter(item => item.label.includes(val)) : this.nameList;
+                },
+                doReset() {
+                    this.searchForm = {
+                        name: "",
+                        equipmentName: "",
+                        powerType: "",
+                    }
+                },
+                clickRemove(index) {
+                    this.$messageBox.confirm('确认要删除这条数据吗？', '提示').then(() => {
+                        this.originData.splice(index, 1);
+                        this.updateStorageData();
+                        this.$message.success("删除成功");
+                    }).catch(() => { })
+                },
+                clickChange(index) {
+                    this.isAdd = false;
+                    this.currentIndex = index;
+                    this.itemForm = _.cloneDeep(this.originData[index]);
+                    this.isShowDialog = true;
+                },
+                clickAdd() {
+                    this.isAdd = true;
+                    this.itemForm = _.cloneDeep(this.defaultItem);
+                    this.isShowDialog = true;
+                },
+                confirmAdd() {
+                    if (!this.itemForm.name) return this.$message.warning("请先输入威能名");
+                    if (this.isAdd) {
+                        if (this.hasSameName) return this.$message.warning("已存在名称相同的威能");
+                        this.originData.push(this.itemForm);
+                        this.updateStorageData();
+                        // this.doSearch(); // 数据更新后要重新搜索
+                        this.isShowDialog = false;
+                        this.$message.success("新增成功");
+                    } else {
+                        this.originData.splice(this.currentIndex, 1, this.itemForm);
+                        this.updateStorageData();
+                        this.isShowDialog = false;
+                        this.$message.success("修改成功");
+                    }
+                },
+                selectPowerTemplate(val) {
+                    console.log("selectPowerTemplate", val)
+                    const power = this.powerData.find(item => item.name === val);
+                    if (power) {
+                        this.itemForm.name = power.name;
+                        this.itemForm.powerType = power.powerType;
+                        this.itemForm.description = power.description;
+                    }
+                },
+                clickCheckPower() {
+                    window.location.href = "./powerList.html"
+                }
+            },
+        });
+
+        app.use(ElementPlus, {
+            locale: zhCn,
+        })
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

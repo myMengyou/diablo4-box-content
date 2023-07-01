@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗黑破坏神4箱子内容统计</title>
+    <link rel="stylesheet" href="./libs/element-plus@2.3.7/element-plus@2.3.7.css">
+    <!-- <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css" /> -->
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .flex-box {
+            display: flex;  
+        }
+        .order-num {
+            flex-shrink: 0;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <h1>威能表</h1>
+        <el-form inline :model="searchForm" class="search-form" ref="formRef">
+            <el-form-item label="威能名">
+                <!-- <el-select-v2 v-model="searchForm.name" :options="nameList" filterable clearable placeholder="选择威能">
+                </el-select-v2> -->
+                <el-autocomplete v-model="searchForm.name" :fetch-suggestions="suggestions" clearable />
+            </el-form-item>
+            <el-form-item label="威能类型">
+                <el-select-v2 v-model="searchForm.powerType" :options="powerTypeList" clearable placeholder="选择威能类型">
+                </el-select-v2>
+            </el-form-item>
+            <el-form-item>
+                <!-- <el-button type="primary" @click="doSearch">查询</el-button> -->
+                <el-button @click="doReset">重置</el-button>
+                <el-button type="success" @click="clickReturn">返回统计页</el-button>
+                <el-button type="primary" @click="clickAdd">新增</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table :data="filterTableData" stripe border :header-cell-style="{background: '#f6f6f6', color: '#333'}">
+            <el-table-column align="center" type="index" label="序号" width="80px"></el-table-column>
+            <el-table-column align="center" prop="name" label="威能名" min-width="100px"></el-table-column>
+            <el-table-column align="center" label="威能类型" min-width="100px">
+                <template #default="scope">
+                    <div>{{powerTypeObj[scope.row.powerType]}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="威能差别范围1" min-width="100px">
+                <template #default="scope">
+                    <div v-if="scope.row.powerRangeOne && scope.row.powerRangeOne.length">
+                        {{scope.row.powerRangeOne[0]}}-{{scope.row.powerRangeOne[1]}}{{scope.row.powerRangeUnitOne}}
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="威能差别范围2" min-width="100px">
+                <template #default="scope">
+                    <div v-if="scope.row.powerRangeTwo && scope.row.powerRangeTwo.length">
+                        {{scope.row.powerRangeTwo[0]}}-{{scope.row.powerRangeTwo[1]}}{{scope.row.powerRangeUnitTwo}}
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column align="center" label="威能强度相关数值差别范围" min-width="100px">
+                <template #default="scope">
+                    <div v-if="scope.row.valueRange && scope.row.valueRange.length">
+                        {{scope.row.valueRange[0]}}-{{scope.row.valueRange[1]}}{{scope.row.valueUnit}}
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column> -->
+            <el-table-column align="center" prop="description" label="威能描述" min-width="140px"></el-table-column>
+            <el-table-column align="center" prop="remark" label="备注" min-width="100px"></el-table-column>
+            <!-- <el-table-column align="center" label="截图" min-width="140px">
+                <template #default="scope">
+                    <el-image v-for="(item, index) in scope.row.screenshots" :key="index" :src="item" fit="contain" />
+                </template>
+            </el-table-column> -->
+            <el-table-column align="center" label="操作" min-width="100px">
+                <template #default="scope">
+                    <el-button type="text" @click="clickChange(scope.$index)">修改</el-button>
+                    <el-button type="text" @click="clickRemove(scope.$index)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-dialog v-model="isShowDialog" :title="isAdd? '新增威能' : '修改威能'" width="600px">
+            <el-form :model="powerForm" label-width="120px">
+                <el-form-item label="威能名" prop="name" required>
+                    <el-input v-model="powerForm.name"></el-input>
+                </el-form-item>
+                <el-form-item prop="powerType" required>
+                    <template #label>
+                        <div style="display: flex; align-items: center;">
+                            <span>威能类型</span>
+                            <el-popover placement="bottom-start" title="威能类型说明" :width="400" trigger="hover">
+                                <template #reference>
+                                    <el-icon size="16" style="margin-left: 4px;">
+                                        <Warning />
+                                    </el-icon>
+                                </template>
+                                <template #default>
+                                    <div style="line-height: 20px;">
+                                        <div class="flex-box"><span
+                                                class="order-num">1.</span>无差别类型：同种威能的各个威能个体的效果一致，不存在个体差距，没有浮动数值范围。
+                                        </div>
+                                        <div class="flex-box"><span
+                                                class="order-num">2.</span>范围差别类型：同种威能的各个威能个体数值在一个区间内存在差距，有浮动数值范围。</div>
+                                        <div class="flex-box"><span
+                                                class="order-num">3.</span>强度数值差别类型：同种威能的各个威能个体的数值跟装备的物品强度有关，物品强度越高，威能数值越高。（包含部分有浮动范围的）
+                                        </div>
+                                    </div>
+                                </template>
+                            </el-popover>
+                        </div>
+                    </template>
+                    <el-radio-group v-model="powerForm.powerType">
+                        <el-radio v-for="(item, index) in powerTypeList" :key="index"
+                            :label="item.value">{{item.label}}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="威能差别范围1" v-if="[2,3].includes(powerForm.powerType)">
+                    <el-input-number v-model="powerForm.powerRangeOne[0]" :step="1" :precision="2"
+                        :min="0"></el-input-number>
+                    <span style="margin: 0 10px;">-</span>
+                    <el-input-number v-model="powerForm.powerRangeOne[1]" :step="1" :precision="2"
+                        :min="0"></el-input-number>
+                    <el-input v-model="powerForm.powerRangeUnitOne" placeholder="单位"
+                        style="width: 60px;margin-left: 10px;"></el-input>
+                </el-form-item>
+                <el-form-item label="威能差别范围2" v-if="[2,3].includes(powerForm.powerType)">
+                    <el-input-number v-model="powerForm.powerRangeTwo[0]" :step="1" :precision="2"
+                        :min="0"></el-input-number>
+                    <span style="margin: 0 10px;">-</span>
+                    <el-input-number v-model="powerForm.powerRangeTwo[1]" :step="1" :precision="2"
+                        :min="0"></el-input-number>
+                    <el-input v-model="powerForm.powerRangeUnitTwo" placeholder="单位"
+                        style="width: 60px;margin-left: 10px;"></el-input>
+                </el-form-item>
+                <el-form-item label="威能描述">
+                    <el-input type="textarea" v-model="powerForm.description"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="powerForm.remark"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="isShowDialog = false">取消</el-button>
+                    <el-button type="primary" @click="confirmAdd">确定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+
+    <script src="./libs/vue.global.js"></script>
+    <script src="./libs/element-plus@2.3.7/element-plus@2.3.7.js"></script>
+    <script src="./libs/element-plus@2.3.7/icons-vue@2.1.0/index.iife.min.js"></script>
+    <script src="./libs/element-plus@2.3.7/zh-cn.mjs"></script>
+    <script src="./libs/lodash@4.17.21/lodash.min.js"></script>
+    <script src="./constants.js"></script>
+    <!-- <script src="//unpkg.com/element-plus"></script> -->
+    <script>
+        const { createApp, ref } = Vue;
+
+        const app = createApp({
+            components: {
+                Warning: ElementPlusIconsVue.Warning,
+            },
+            setup() {
+                const originData = ref([]);
+                // const tableData = ref([]);
+                const searchForm = ref({});
+                const powerTypeList = ref([]);
+                const powerTypeObj = ref({});
+                const defaultPower = {
+                    name: "",
+                    powerType: 1,
+                    powerRangeOne: [],
+                    powerRangeUnitOne: "",
+                    powerRangeTwo: [],
+                    powerRangeUnitTwo: "",
+                    description: "",
+                    remark: "",
+                };
+                const isShowDialog = ref(false);
+                const powerForm = ref({});
+                const isAdd = ref(false);
+                const currentIndex = ref(0);
+
+
+                // 威能类型：1|无差别类型，2|范围差别类型，3|强度数值差别类型
+                // 说明：
+                // 1. 无差别类型：同种威能的各个威能个体的效果一致，不存在个体差距，没有浮动数值范围。
+                // 2. 范围差别类型：同种威能的各个威能个体数值在一个区间内存在差距，有浮动数值范围。
+                // 3. 强度数值差别类型：同种威能的各个威能个体的数值跟装备的物品强度有关，物品强度越高，威能数值越高。（包含部分有浮动范围的）
+
+                // originData.value = [
+                //     {
+                //         name: "威能名",
+                //         powerType: 1,
+                //         powerRangeOne: [40, 60],
+                //         powerRangeUnitOne: "%",
+                //         powerRangeTwo: [1, 5],
+                //         powerRangeUnitTwo: "秒",
+                //         description: "威能描述",
+                //     },
+                //     {
+                //         name: "威能名",
+                //         powerType: 1,
+                //         powerRangeOne: [],
+                //         powerRangeUnitOne: "",
+                //         powerRangeOne: [],
+                //         powerRangeUnitOne: "",
+                //         description: "威能描述",
+                //     },
+                // ];
+                // tableData.value = _.cloneDeep(originData);
+                searchForm.value = {
+                    name: "",
+                    powerType: "",
+                };
+                powerTypeList.value = POWER_TYPE_LIST;
+                const obj = {};
+                for (let i in powerTypeList.value) {
+                    obj[powerTypeList.value[i].value] = powerTypeList.value[i].label;
+                }
+                powerTypeObj.value = obj;
+                return {
+                    originData,
+                    // tableData,
+                    searchForm,
+                    powerTypeList,
+                    powerTypeObj,
+                    defaultPower,
+                    powerForm,
+                    isShowDialog,
+                    isAdd,
+                    currentIndex,
+                }
+            },
+            computed: {
+                filterTableData({ originData, searchForm }) {
+                    return originData.filter(item => item.name.includes(searchForm.name) &&
+                        (!searchForm.powerType || item.powerType === searchForm.powerType));
+                },
+                nameList({ originData }) {
+                    return originData.map(item => {
+                        return {
+                            label: item.name,
+                            value: item.name,
+                        }
+                    })
+                },
+                hasSameName({ originData, powerForm }) {
+                    const item = originData.find(item => item.name === powerForm.name);
+                    return !!item;
+                },
+            },
+            created() {
+                const dataStr = localStorage.getItem(STORAGE_KEY.powerData) || "[]";
+                const data = JSON.parse(dataStr);
+                this.originData = data;
+            },
+            methods: {
+                // // 初始化数据库
+                // initIDDB() {
+                //     window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+                //     window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+                //     window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+                // },
+                // doSearch() {
+                //     this.tableData =
+                //         this.originData.filter(item => item.name.includes(this.searchForm.name) &&
+                //             (!this.searchForm.powerType || item.powerType === this.searchForm.powerType));
+                // },
+                updateStorageData() {
+                    localStorage.setItem(STORAGE_KEY.powerData, JSON.stringify(this.originData));
+                },
+                suggestions(val) {
+                    return val ? this.nameList.filter(item => item.label.includes(val)) : this.nameList;
+                },
+                doReset() {
+                    this.searchForm = {
+                        name: "",
+                        powerType: "",
+                    }
+                    // this.doSearch();
+                },
+                clickRemove(index) {
+                    this.$messageBox.confirm('确认要删除这条数据吗？', '提示').then(() => {
+                        this.originData.splice(index, 1);
+                        this.updateStorageData();
+                        this.$message.success("删除成功");
+                    }).catch(() => { })
+                },
+                clickReturn() {
+                    window.location.href = "./index.html";
+                },
+                clickChange(index) {
+                    this.isAdd = false;
+                    this.currentIndex = index;
+                    this.powerForm = _.cloneDeep(this.originData[index]);
+                    this.isShowDialog = true;
+                },
+                clickAdd() {
+                    this.isAdd = true;
+                    this.powerForm = _.cloneDeep(this.defaultPower);
+                    this.isShowDialog = true;
+                },
+                confirmAdd() {
+                    if (!this.powerForm.name) return this.$message.warning("请先输入威能名");
+                    if (!this.powerForm.powerType) return this.$message.warning("请先选择威能类型");
+                    // 无差别类型要重置差别范围数据
+                    if (this.powerForm.powerType === 1) {
+                        this.powerForm.powerRangeOne = [];
+                        this.powerForm.powerRangeUnitOne = "";
+                        this.powerForm.powerRangeTwo = [];
+                        this.powerForm.powerRangeUnitTwo = "";
+                    }
+                    if (this.isAdd) {
+                        if (this.hasSameName) return this.$message.warning("已存在名称相同的威能");
+                        this.originData.push(this.powerForm);
+                        this.updateStorageData();
+                        // this.doSearch(); // 数据更新后要重新搜索
+                        this.isShowDialog = false;
+                        this.$message.success("新增成功");
+                    } else {
+                        this.originData.splice(this.currentIndex, 1, this.powerForm);
+                        this.updateStorageData();
+                        this.isShowDialog = false;
+                        this.$message.success("修改成功");
+                    }
+                },
+            },
+        });
+        // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        //     app.component(key, component)
+        // }
+        app.use(ElementPlus, {
+            locale: zhCn,
+        })
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
