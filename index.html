@@ -44,7 +44,7 @@
                 <el-button type="primary" @click="clickAdd">新增</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="originData" stripe border :header-cell-style="{background: '#f6f6f6', color: '#333'}">
+        <el-table :data="filterTableData" stripe border :header-cell-style="{background: '#f6f6f6', color: '#333'}">
             <el-table-column align="center" type="index" label="序号" width="80px"></el-table-column>
             <el-table-column align="center" prop="name" label="威能名" min-width="100px"></el-table-column>
             <el-table-column align="center" label="威能类型" min-width="100px">
@@ -69,8 +69,8 @@
                 </template>
             </el-table-column>
             <el-table-column align="center" prop="equipmentName" label="装备名" min-width="120px"></el-table-column>
-            <el-table-column align="center" prop="description" label="威能描述" min-width="140px"></el-table-column>
-            <el-table-column align="center" prop="remark" label="备注" min-width="120px"></el-table-column>
+            <el-table-column align="center" prop="description" label="威能描述" min-width="280px"></el-table-column>
+            <el-table-column align="center" prop="remark" label="备注" min-width="100px"></el-table-column>
             <!-- <el-table-column align="center" label="截图" min-width="140px">
                 <template #default="scope">
                     <el-image v-for="(item, index) in scope.row.screenshots" :key="index" :src="item" fit="contain" />
@@ -255,9 +255,11 @@
             },
             computed: {
                 filterTableData({ originData, searchForm }) {
-                    return originData.filter(item => item.name.includes(searchForm.name) &&
+                    return originData.filter(item => item.name.includes(
+                        searchForm.name) &&
                         (!searchForm.powerType || item.powerType === searchForm.powerType) &&
-                        item.equipmentName.includes(searchForm.equipmentName));
+                        (!item.equipmentName || item.equipmentName.includes(searchForm.equipmentName))
+                    );
                 },
                 nameList({ originData }) {
                     return originData.map(item => {
