@@ -330,8 +330,9 @@
                         this.isShowDialog = false;
                         this.$message.success("新增成功");
                     } else {
-                        const index = this.originData.findIndex(item => item.name === this.itemForm.name);
-                        this.originData.splice(this.currentIndex, 1, this.itemForm);
+                        const currentPower = this.filterTableData[this.currentIndex]; // 找出被修改的原数据
+                        const index = this.originData.findIndex(item => item.name === currentPower.name); // 通过原数据的名称找出索引
+                        this.originData.splice(index, 1, this.itemForm);
                         this.updateStorageData();
                         this.isShowDialog = false;
                         this.$message.success("修改成功");
