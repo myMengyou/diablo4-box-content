@@ -305,7 +305,7 @@
                 clickChange(index) {
                     this.isAdd = false;
                     this.currentIndex = index;
-                    this.powerForm = _.cloneDeep(this.originData[index]);
+                    this.powerForm = _.cloneDeep(this.filterTableData[index]);
                     this.isShowDialog = true;
                 },
                 clickAdd() {
@@ -331,7 +331,8 @@
                         this.isShowDialog = false;
                         this.$message.success("新增成功");
                     } else {
-                        this.originData.splice(this.currentIndex, 1, this.powerForm);
+                        const index = this.originData.findIndex(item => item.name === this.powerForm.name);
+                        this.originData.splice(index, 1, this.powerForm);
                         this.updateStorageData();
                         this.isShowDialog = false;
                         this.$message.success("修改成功");

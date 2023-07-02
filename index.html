@@ -312,7 +312,7 @@
                 clickChange(index) {
                     this.isAdd = false;
                     this.currentIndex = index;
-                    this.itemForm = _.cloneDeep(this.originData[index]);
+                    this.itemForm = _.cloneDeep(this.filterTableData[index]);
                     this.isShowDialog = true;
                 },
                 clickAdd() {
@@ -330,6 +330,7 @@
                         this.isShowDialog = false;
                         this.$message.success("新增成功");
                     } else {
+                        const index = this.originData.findIndex(item => item.name === this.itemForm.name);
                         this.originData.splice(this.currentIndex, 1, this.itemForm);
                         this.updateStorageData();
                         this.isShowDialog = false;

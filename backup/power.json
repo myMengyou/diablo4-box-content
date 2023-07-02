@@ -1,0 +1,776 @@
+[
+    {
+        "name": "优势大师",
+        "powerType": 2,
+        "powerRangeOne": [
+            10,
+            20
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "自然野性",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "惩击",
+        "powerType": 2,
+        "powerRangeOne": [
+            10,
+            20
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [
+            20,
+            40
+        ],
+        "powerRangeUnitTwo": "%",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "震动变换",
+        "powerType": 2,
+        "powerRangeOne": [
+            2,
+            1
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "碾石",
+        "powerType": 2,
+        "powerRangeOne": [
+            30,
+            40
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "急促",
+        "powerType": 2,
+        "powerRangeOne": [
+            15,
+            30
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "践踏大地",
+        "powerType": 2,
+        "powerRangeOne": [
+            70,
+            80
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "惩戒",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            40
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "强力风暴",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "针刺暴突",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            40
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "超载",
+        "powerType": 3,
+        "powerRangeOne": [
+            10,
+            20
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "变形石",
+        "powerType": 2,
+        "powerRangeOne": [
+            80,
+            100
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "余震",
+        "powerType": 2,
+        "powerRangeOne": [
+            6,
+            12
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "逐风者",
+        "powerType": 2,
+        "powerRangeOne": [
+            1,
+            3
+        ],
+        "powerRangeUnitOne": "个",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "闪电舞者",
+        "powerType": 3,
+        "powerRangeOne": [
+            1395,
+            1594
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "心如止水",
+        "powerType": 2,
+        "powerRangeOne": [
+            5,
+            10
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "保护",
+        "powerType": 2,
+        "powerRangeOne": [
+            3,
+            5
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "勇力",
+        "powerType": 2,
+        "powerRangeOne": [
+            2,
+            6
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "旋风斥力",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "旋风甲也会提供物理伤害减免。此外你也会对所有附近盟友施加旋风甲。",
+        "remark": ""
+    },
+    {
+        "name": "震荡波",
+        "powerType": 2,
+        "powerRangeOne": [
+            60,
+            100
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "恐狼",
+        "powerType": 2,
+        "powerRangeOne": [
+            15,
+            25
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [
+            30,
+            50
+        ],
+        "powerRangeUnitTwo": "%",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "大地卫士",
+        "powerType": 2,
+        "powerRangeOne": [
+            15,
+            25
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "兽皮行者",
+        "powerType": 3,
+        "powerRangeOne": [
+            108,
+            216
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "逸脱",
+        "powerType": 2,
+        "powerRangeOne": [
+            40,
+            20
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "移风者",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "当飓风激活时，你的变形技能级别+2。",
+        "remark": ""
+    },
+    {
+        "name": "弹道",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "当你拥有强固时，大地技能等级+2。",
+        "remark": ""
+    },
+    {
+        "name": "共生",
+        "powerType": 2,
+        "powerRangeOne": [
+            4,
+            8
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "残伤",
+        "powerType": 2,
+        "powerRangeOne": [
+            30,
+            40
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "吸纳",
+        "powerType": 2,
+        "powerRangeOne": [
+            5,
+            10
+        ],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "袭风者",
+        "powerType": 2,
+        "powerRangeOne": [
+            8,
+            16
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "幽灵行者",
+        "powerType": 2,
+        "powerRangeOne": [
+            10,
+            25
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "月蚀",
+        "powerType": 2,
+        "powerRangeOne": [
+            1,
+            4
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "星光资源",
+        "powerType": 2,
+        "powerRangeOne": [
+            10,
+            20
+        ],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "剥削者",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            50
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "共难",
+        "powerType": 2,
+        "powerRangeOne": [
+            30,
+            50
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "簇拥智者",
+        "powerType": 3,
+        "powerRangeOne": [
+            12,
+            48
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "偏转屏障",
+        "powerType": 2,
+        "powerRangeOne": [
+            7,
+            13
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "暗嚎",
+        "powerType": 2,
+        "powerRangeOne": [
+            2,
+            4
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "流沙",
+        "powerType": 2,
+        "powerRangeOne": [
+            25,
+            50
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "狼首",
+        "powerType": 2,
+        "powerRangeOne": [
+            75,
+            100
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "雷暴",
+        "powerType": 2,
+        "powerRangeOne": [
+            7,
+            15
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "牧羊人",
+        "powerType": 2,
+        "powerRangeOne": [
+            6,
+            8
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "风暴爪",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            30
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "变身索债",
+        "powerType": 2,
+        "powerRangeOne": [
+            120,
+            150
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "加速",
+        "powerType": 2,
+        "powerRangeOne": [
+            15,
+            25
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "恐怖熊人",
+        "powerType": 3,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "夜嚎者",
+        "powerType": 2,
+        "powerRangeOne": [
+            5,
+            10
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "狂暴熊人",
+        "powerType": 2,
+        "powerRangeOne": [
+            1,
+            5
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "符文匠师",
+        "powerType": 3,
+        "powerRangeOne": [
+            1,
+            2
+        ],
+        "powerRangeUnitOne": "秒",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "迷踪野兽",
+        "powerType": 2,
+        "powerRangeOne": [
+            70,
+            100
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "骄狂",
+        "powerType": 2,
+        "powerRangeOne": [
+            15,
+            25
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "贪婪狼性",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            30
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [
+            20,
+            30
+        ],
+        "powerRangeUnitTwo": "%",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "还击",
+        "powerType": 2,
+        "powerRangeOne": [
+            20,
+            40
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "荒原怒火",
+        "powerType": 1,
+        "powerRangeOne": [],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "群奔",
+        "powerType": 2,
+        "powerRangeOne": [
+            10,
+            20
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "平衡",
+        "powerType": 2,
+        "powerRangeOne": [
+            30,
+            50
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "疗愈石",
+        "powerType": 2,
+        "powerRangeOne": [
+            191,
+            383
+        ],
+        "powerRangeUnitOne": "点",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "违抗",
+        "powerType": 2,
+        "powerRangeOne": [
+            0.25,
+            0.5
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [
+            25,
+            50
+        ],
+        "powerRangeUnitTwo": "%",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "自然平衡",
+        "powerType": 2,
+        "powerRangeOne": [
+            30,
+            45
+        ],
+        "powerRangeUnitOne": "%",
+        "powerRangeTwo": [
+            8,
+            12
+        ],
+        "powerRangeUnitTwo": "%",
+        "description": "",
+        "remark": ""
+    },
+    {
+        "name": "保护者",
+        "powerType": 3,
+        "powerRangeOne": [
+            null,
+            null
+        ],
+        "powerRangeUnitOne": "",
+        "powerRangeTwo": [],
+        "powerRangeUnitTwo": "",
+        "description": "",
+        "remark": ""
+    }
+]
